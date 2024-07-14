@@ -1,0 +1,113 @@
+<script>
+	import { theme } from './store';
+	import { browser } from '$app/environment';
+	import { onDestroy } from 'svelte';
+	import { crossfade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+	import Icon from '@/components/icon.svelte';
+
+	let { label = '' } = $props();
+
+	/**
+	 * Using Svelte's crossfade transition function to animate a stylized
+	 * transition between light and dark mode icons.
+	 */
+	const [send, receive] = crossfade({
+		fallback(node, params) {
+			const style = getComputedStyle(node);
+			const transform = style.transform === 'none' ? '' : style.transform;
+
+			return {
+				duration: 600,
+				easing: quintOut,
+				css: (t) => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`
+			};
+		}
+	});
+
+	/**
+	 * Toggle function to switch between light and dark mode
+	 * Theme preference determined by a Svelte store object persisted in
+	 * browser's local storage and aware of the user's system preference.
+	 */
+	function toggle() {
+		const upcoming_theme = $theme.current === 'light' ? 'dark' : 'light';
+
+		if (
+			upcoming_theme ===
+			(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+		) {
+			// Switch the preference to `system`
+			$theme.preference = 'system';
+		} else {
+			// Switch the preference to `light` or `dark`
+			$theme.preference = upcoming_theme;
+		}
+
+		$theme.current = upcoming_theme;
+	}
+
+	/** @param {MediaQueryListEvent} e */
+	const cb = (e) =>
+		theme.set({ preference: $theme.preference, current: e.matches ? 'dark' : 'light' });
+
+	/** @type {MediaQueryList} */
+	let query;
+
+	$effect(() => {
+		if (!browser) return;
+
+		query?.removeEventListener('change', cb);
+
+		if ($theme.preference === 'system') {
+			query = window.matchMedia('(prefers-color-scheme: dark)');
+			query.addEventListener('change', cb);
+		}
+	});
+
+	onDestroy(() => query?.removeEventListener('change', cb));
+</script>
+
+<button
+	onclick={toggle}
+	type="button"
+	aria-pressed={$theme.current === 'dark' ? 'true' : 'false'}
+	aria-label={(label = 'Dark Mode')}
+	class="group swap swap-rotate"
+>
+	<input type="checkbox" />
+	{#if browser}
+		{#if $theme.current === 'light'}
+			<span
+				class="lg:tooltip lg:tooltip-bottom"
+				style:--tooltip-offset="calc(100% + 8px + var(--tooltip-tail, 0px))"
+				style:--tooltip-tail-offset="calc(100% + 8px - var(--tooltip-tail))"
+				data-tip="Dark Mode"
+				in:receive={{ key: Math.random() }}
+				out:send={{ key: Math.random() }}
+			>
+				<Icon
+					icon="mdi:weather-sunny"
+					class="size-4 transition-colors duration-500 group-hover:text-accent lg:size-5"
+				/>
+			</span>
+		{:else}
+			<span
+				class="lg:tooltip lg:tooltip-bottom"
+				style:--tooltip-offset="calc(100% + 8px + var(--tooltip-tail, 0px))"
+				style:--tooltip-tail-offset="calc(100% + 8px - var(--tooltip-tail))"
+				data-tip="Light Mode"
+				in:receive={{ key: Math.random() }}
+				out:send={{ key: Math.random() }}
+			>
+				<Icon
+					icon="mdi:weather-night"
+					class="size-4 transition-colors duration-500 group-hover:text-accent lg:size-5"
+				/>
+			</span>
+		{/if}
+	{/if}
+</button>
