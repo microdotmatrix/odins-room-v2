@@ -1,6 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 
-export const prerender = 'auto';
+export const prerender = false;
 
 export const load = (async ({ fetch, params }) => {
 	const { albumId } = params;
