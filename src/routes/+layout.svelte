@@ -62,11 +62,14 @@
 			transition: color 400ms ease;
 			position: relative;
 			text-align: center;
-			&:is(:hover, :focus, .active) {
+			&:is(:hover, :focus) {
 				color: theme('colors.accent');
 				&::after {
 					transform: scaleX(0.8);
 				}
+			}
+			&:is(.active) {
+				color: theme('colors.accent');
 			}
 			&::after {
 				content: '';
