@@ -58,7 +58,7 @@
 	{/each}
 	{#if $limit < $images.length}
 		<button
-			class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+			class="m-4 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-8 text-lg font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 md:m-0 lg:py-2"
 			onclick={loadMore}
 		>
 			Load More <Icon icon="mdi:plus" classes="size-4" />
@@ -71,9 +71,11 @@
 		display: grid;
 		grid-auto-flow: dense;
 		grid-template-columns: repeat(1, minmax(0, 1fr));
+		padding-bottom: 4rem;
 		@media (min-width: 768px) {
 			grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
 			grid-gap: 0.25rem;
+			padding-bottom: 0;
 		}
 	}
 	.gallery .gallery-cell {

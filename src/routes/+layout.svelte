@@ -2,11 +2,32 @@
 	import '../app.css';
 	import { setupViewTransition } from 'sveltekit-view-transition';
 	import { navigating, page } from '$app/stores';
+	import { goto, invalidate } from '$app/navigation';
 
 	import Icon from '@/components/icon.svelte';
 	import ThemeSwitch from '@/components/theme/switch.svelte';
 
-	let { children } = $props();
+	let { data, children } = $props();
+
+	let { supabase, session } = data;
+
+	let logout = $derived(async () => {
+		const { error } = await supabase.auth.signOut();
+		if (error) {
+			console.error(error);
+		}
+		return goto('/auth');
+	});
+
+	$effect(() => {
+		const { data: auth } = supabase.auth.onAuthStateChange((_, newSession) => {
+			if (newSession?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
+
+		return () => auth.subscription.unsubscribe();
+	});
 
 	setupViewTransition();
 </script>
@@ -25,6 +46,15 @@
 				<span>Albums</span>
 			</a>
 		</nav>
+		{#if !session}
+			<a href="/auth" class="tooltip tooltip-bottom" data-tip="Login">
+				<Icon icon="ph:sign-in" classes="size-6" />
+			</a>
+		{:else}
+			<button onclick={logout} class="tooltip tooltip-bottom" data-tip="Logout">
+				<Icon icon="ph:sign-out" classes="size-6" />
+			</button>
+		{/if}
 		<ThemeSwitch />
 		<div class="size-6">
 			{#if $navigating}
@@ -57,7 +87,7 @@
 			gap: 0.25rem;
 			justify-content: center;
 			align-items: center;
-			padding: 0.5rem 0.5rem;
+			padding: 0.5rem 0.15rem;
 			font-size: 1.5rem;
 			transition: color 400ms ease;
 			position: relative;
@@ -83,6 +113,9 @@
 				background-color: theme('colors.accent');
 				transform: scaleX(0);
 				transition: transform 400ms ease;
+			}
+			@media (min-width: 768px) {
+				padding: 0.5rem 0.5rem;
 			}
 		}
 	}

@@ -1,3 +1,5 @@
+import { SupabaseClient, Session } from '@supabase/supabase-js';
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
@@ -5,8 +7,13 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			bearerToken: string;
+			supabase: SupabaseClient;
+			safeGetSession(): Promise<{ session: Session | null; user: User | null }>;
 		}
-		// interface PageData {}
+		interface PageData {
+			session: Session | null;
+			user: User | null;
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}
