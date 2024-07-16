@@ -6,7 +6,8 @@
 </script>
 
 <svelte:head>
-	<title>User Management</title>
+	<title>Login</title>
+	<meta name="description" content="Login to view photo albums" />
 </svelte:head>
 
 <Login {form} />
