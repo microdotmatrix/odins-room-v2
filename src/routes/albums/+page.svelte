@@ -1,10 +1,11 @@
 <script lang="ts">
 	import AlbumCard from '@/components/media/card.svelte';
-	import type { PageData } from './$types';
 	import Loading from '@/components/loading.svelte';
-	export let data: PageData;
+	import type { PageData } from './$types';
 
-	$: ({ albums } = data);
+	let { data }: { data: PageData } = $props();
+
+	let { albums } = data;
 </script>
 
 {#await $albums}
@@ -77,53 +78,3 @@
 {:catch error}
 	<p>Error: {error.message}</p>
 {/await}
-
-<style>
-	.album-grid {
-		display: grid;
-		grid-template-columns: repeat(1, minmax(0, 1fr));
-		grid-gap: 1.5rem;
-		@media (min-width: 768px) {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-		@media (min-width: 1280px) {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-	}
-
-	.album-card {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: stretch;
-
-		position: relative;
-		& .title {
-			position: absolute;
-			bottom: 1em;
-			left: 1em;
-			width: fit-content;
-			padding: var(--size-fluid-1) var(--size-fluid-2);
-		}
-	}
-
-	figure {
-		position: relative;
-		width: 100%;
-		min-height: 480px;
-		& img {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
-	}
-
-	figure .count > span {
-		display: inline-flex;
-		font-size: var(--font-size-fluid-0);
-		font-weight: 600;
-	}
-</style>
