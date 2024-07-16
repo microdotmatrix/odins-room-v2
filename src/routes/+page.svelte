@@ -7,6 +7,8 @@
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 
+	let { session, profile } = data;
+
 	let heading = $state("Welcome to Odin's Room");
 	let message = $state(
 		'A family photo album for my son, Odin. Access restricted to family and friends - ask dad for a login.'
@@ -58,13 +60,13 @@
 					</p>
 				</div>
 
-				{#if !data.session}
+				{#if !session}
 					<div in:fly={{ y: 50, duration: 300, delay: 400 }} out:fly={{ y: 50, duration: 300 }}>
 						<Login {form} />
 					</div>
 				{:else}
 					<div in:fly={{ y: 50, duration: 300, delay: 400 }} out:fly={{ y: 50, duration: 300 }}>
-						<h3>Welcome back {data.user?.email}</h3>
+						<h3>Welcome back {session.user?.email}</h3>
 					</div>
 				{/if}
 			</div>
