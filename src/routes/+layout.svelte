@@ -35,7 +35,7 @@
 
 <Meta />
 
-<header class="fixed bottom-4 left-4 z-50 p-2 xl:sticky xl:top-0">
+<header class="fixed bottom-4 left-4 z-50 p-2 xl:top-0">
 	<section
 		class="flex w-fit items-center gap-6 rounded-full border border-neutral-300 bg-base-300 px-6 shadow-lg shadow-gray-950/80"
 	>
