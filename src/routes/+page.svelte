@@ -3,9 +3,9 @@
 
 	import familyImage from '$lib/images/the-family.jpg?enhanced';
 	import Login from '@/components/login.svelte';
-	import type { ActionData } from './$types';
+	import type { ActionData, PageData } from './$types';
 
-	let { form }: { form: ActionData } = $props();
+	let { data, form }: { data: PageData; form: ActionData } = $props();
 
 	let heading = $state("Welcome to Odin's Room");
 	let message = $state(
@@ -58,9 +58,15 @@
 					</p>
 				</div>
 
-				<div in:fly={{ y: 50, duration: 300, delay: 400 }} out:fly={{ y: 50, duration: 300 }}>
-					<Login {form} />
-				</div>
+				{#if !data.session}
+					<div in:fly={{ y: 50, duration: 300, delay: 400 }} out:fly={{ y: 50, duration: 300 }}>
+						<Login {form} />
+					</div>
+				{:else}
+					<div in:fly={{ y: 50, duration: 300, delay: 400 }} out:fly={{ y: 50, duration: 300 }}>
+						<h3>Welcome back {data.user?.email}</h3>
+					</div>
+				{/if}
 			</div>
 		</article>
 	</div>
