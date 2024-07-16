@@ -38,6 +38,11 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{data.title}</title>
+	<meta name="description" content="Album: {data.title}" />
+</svelte:head>
+
 <h4 class="mr-4 text-right xl:mr-8">{data.title}</h4>
 
 <ul class="gallery" bind:this={container}>

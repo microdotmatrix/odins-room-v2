@@ -6,6 +6,7 @@
 
 	import Icon from '@/components/icon.svelte';
 	import ThemeSwitch from '@/components/theme/switch.svelte';
+	import Meta from '@/components/meta.svelte';
 
 	let { data, children } = $props();
 
@@ -31,6 +32,8 @@
 
 	setupViewTransition();
 </script>
+
+<Meta />
 
 <header class="fixed bottom-4 left-4 z-50 p-2 xl:sticky xl:top-0">
 	<section

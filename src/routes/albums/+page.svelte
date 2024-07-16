@@ -7,6 +7,11 @@
 	let { albums } = data;
 </script>
 
+<svelte:head>
+	<title>Albums</title>
+	<meta name="description" content="Current albums available" />
+</svelte:head>
+
 <div class="container max-w-none px-8 lg:px-[4vw] 2xl:px-[12vw]">
 	<div class="grid gap-6 sm:grid-cols-12">
 		<!-- card one -->
