@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import { setupViewTransition } from 'sveltekit-view-transition';
 	import { navigating, page } from '$app/stores';

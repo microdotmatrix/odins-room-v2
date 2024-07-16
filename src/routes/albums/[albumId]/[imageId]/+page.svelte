@@ -2,13 +2,13 @@
 	import { page } from '$app/stores';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { setupViewTransition } from 'sveltekit-view-transition';
-	import { smoothload } from '$lib/utils/load';
 	import { formatDate } from '$lib/utils/helpers';
 	import Image from '@/components/media/image.svelte';
 	import Video from '@/components/media/video.svelte';
 	import Parent from '@/components/media/parent.svelte';
+	import type { PageData } from './$types';
 
-	let { data } = $props();
+	let { data }: { data: PageData } = $props();
 
 	let { images } = data;
 	let { imageId } = $page.params;

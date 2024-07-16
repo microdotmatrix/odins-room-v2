@@ -1,9 +1,14 @@
-<script>
+<script lang="ts">
 	let {
 		title = 'Odins Room',
 		description = 'A collection of images of my son Odin.',
 		url = 'https://odins-room-v2.vercel.app',
 		keywords = ''
+	}: {
+		title?: string;
+		description?: string;
+		url?: string;
+		keywords?: string;
 	} = $props();
 </script>
 
