@@ -66,7 +66,8 @@
 					</div>
 				{:else}
 					<div in:fly={{ y: 50, duration: 300, delay: 400 }} out:fly={{ y: 50, duration: 300 }}>
-						<h3>Welcome back {session.user?.email}</h3>
+						<h3>Welcome back {profile.full_name}</h3>
+						<p>{session.user?.email}</p>
 					</div>
 				{/if}
 			</div>
