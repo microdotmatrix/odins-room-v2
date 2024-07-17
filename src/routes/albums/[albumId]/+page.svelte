@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { setupViewTransition } from 'sveltekit-view-transition';
-	import { limit, gridRows } from '$lib/stores';
+	import { writable } from 'svelte/store';
 	import { goto } from '$app/navigation';
+	import { fly } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 	import Icon from '@/components/icon.svelte';
 	import type { Snapshot } from './$types';
 
@@ -14,14 +16,17 @@
 	const { transition } = setupViewTransition();
 
 	let pageSize = $derived($page.url.searchParams.get('q'));
+	let limit = writable(12);
+	let loading = $state(false);
 
 	const loadMore = () => {
+		loading = true;
 		limit.update((n) => n + 12);
 		goto(`?q=${$limit}`, {
 			replaceState: false,
 			noScroll: true
 		});
-		gridRows.update((n) => n + 2);
+		loading = false;
 	};
 
 	let container: HTMLElement;
@@ -43,7 +48,12 @@
 	<meta name="description" content="Album: {data.title}" />
 </svelte:head>
 
-<h4 class="mr-4 text-right xl:mr-8">{data.title}</h4>
+<h4
+	class="mr-4 text-right xl:mr-8"
+	in:fly={{ x: 300, duration: 300, delay: 500, easing: quintOut }}
+>
+	{data.title}
+</h4>
 
 <ul class="gallery" bind:this={container}>
 	{#each $images.slice(0, pageSize) as image (image.id)}
@@ -65,8 +75,14 @@
 		<button
 			class="m-4 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-8 text-lg font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 md:m-0 lg:py-2"
 			onclick={loadMore}
+			disabled={loading}
 		>
-			Load More <Icon icon="mdi:plus" classes="size-4" />
+			Load More
+			{#if loading}
+				<Icon icon="svg-spinners:3-dots-fade" classes="size-4" />
+			{:else}
+				<Icon icon="mdi:plus" classes="size-4" />
+			{/if}
 		</button>
 	{/if}
 </ul>
