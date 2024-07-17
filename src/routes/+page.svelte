@@ -26,10 +26,14 @@
 				alt="Odin's Room"
 				src="{familyImage}?w=1280;640;400"
 				sizes="(min-width:1920px) 1280px, (min-width:1080px) 640px, (min-width:768px) 400px"
-				class="absolute inset-0 h-full w-full object-cover opacity-60"
+				class="absolute inset-0 z-10 h-full w-full object-cover opacity-60"
 			/>
 
-			<div class="hidden lg:relative lg:block lg:p-8">
+			<div
+				class="absolute inset-0 z-20 bg-gradient-to-r from-[#8E2DE2] to-[#4A00E0] opacity-50 mix-blend-color-dodge backdrop-blur-sm"
+			></div>
+
+			<div class="z-20 hidden lg:relative lg:block lg:p-8">
 				<h2
 					class="mt-6 text-3xl font-bold text-white sm:text-4xl md:text-5xl"
 					in:fly={{ x: -100, duration: 300, delay: 1500 }}
